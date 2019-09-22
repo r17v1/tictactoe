@@ -191,7 +191,7 @@ function minimax(board, player) {
 //Almost exactly like the minimax function, however sometimes it makes mistake depending on the value of a random number.
 function normal(board, player) {
 	let i = Math.floor(Math.random() * 100);
-	if (i < 10 && player === player_move) {
+	if (i < 8 && player === player_move) {
 		return -10;
 	}
 	let newPlayer = '';
