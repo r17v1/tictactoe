@@ -217,5 +217,3 @@ function normal(board, player) {
 	if (player == player_move) return mn;
 	else return mx;
 }
-
-/* */
