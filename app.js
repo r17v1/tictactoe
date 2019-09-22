@@ -1,14 +1,17 @@
 /*jshint esversion: 6 */
 let player_move = 'X';
 let pc_move = 'O';
+//HUD variables
 let won = 0,
 	draw = 0,
 	lost = 0;
 
 let board = $('.cell');
-
+//All win combinations. This is later used to check for a win/loss.
 let win = [ [ 0, 1, 2 ], [ 3, 4, 5 ], [ 6, 7, 8 ], [ 0, 3, 6 ], [ 1, 4, 7 ], [ 2, 5, 8 ], [ 0, 4, 8 ], [ 2, 4, 6 ] ];
+//no of games
 let game = 0;
+//difficulty settings
 let dif = '';
 startGame();
 //will be called every time a new game has started
