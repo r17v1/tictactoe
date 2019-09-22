@@ -36,7 +36,7 @@ $('#restartButton').click(function() {
 });
 //Updates HUD values (win, lose, draw)
 function hud() {
-	$('.score').html('Win: ' + won + ' Lost: ' + lost + ' Draw: ' + draw);
+	$('.score').html('Player: ' + won + '   AI: ' + lost + '   Draw: ' + draw);
 }
 //when a game ends, this button will become visible. clicking this button will start a new game.
 //Unlike the restart button, this button only resets the board and not the scores.
