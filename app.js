@@ -11,21 +11,7 @@ let win = [ [ 0, 1, 2 ], [ 3, 4, 5 ], [ 6, 7, 8 ], [ 0, 3, 6 ], [ 1, 4, 7 ], [ 2
 let game = 0;
 let dif = '';
 startGame();
-
-$('#restartButton').click(function() {
-	game = 0;
-	won = 0;
-	lost = 0;
-	draw = 0;
-	startGame();
-});
-function hud() {
-	$('.score').html('Win: ' + won + ' Lost: ' + lost + ' Draw: ' + draw);
-}
-$('#next').click(function() {
-	startGame();
-});
-
+//will be called every time a new game has started
 function startGame() {
 	$('#next').css('display', 'none');
 	hud();
@@ -40,6 +26,25 @@ function startGame() {
 	}
 	game++;
 }
+//Clicking restart will reset the game states and start a new game
+$('#restartButton').click(function() {
+	game = 0;
+	won = 0;
+	lost = 0;
+	draw = 0;
+	startGame();
+});
+//Updates HUD values (win, lose, draw)
+function hud() {
+	$('.score').html('Win: ' + won + ' Lost: ' + lost + ' Draw: ' + draw);
+}
+//when a game ends, this button will become visible. clicking this button will start a new game.
+//Unlike the restart button, this button only resets the board and not the scores.
+$('#next').click(function() {
+	startGame();
+});
+
+//changing difficulty will reset the game state and start a new game.
 $('select').click(function() {
 	if (dif != $('select').val()) {
 		game = 0;
@@ -49,23 +54,27 @@ $('select').click(function() {
 		startGame();
 	}
 });
+//when a game ends this function will remove event listeners from the cells
 function removeEL() {
 	for (let i = 0; i < board.length; i++) {
 		board[i].removeEventListener('click', turnClick);
 	}
 }
 
+//when a cell is clicked the turnPlayer function is called. Passes the id of the cell that was clicked
 function turnClick(e) {
 	turnPlayer(e.target.id);
 }
 
+//Checks for validity of a move. If the move is valid the cell with ID=id shows 'X'. Then this function checks if the game is over
+//If the game is not over, its the AI's turn, so turnPC is called.
 function turnPlayer(id) {
 	if ($('#' + id).html().length === 0) {
 		$('#' + id).html(player_move);
 		if (!checkWin()) turnPc();
 	}
 }
-
+//AI's turn. Calls the normal/minimax function depending on dificulty and plays according to the return value of those function
 function turnPc() {
 	let functocall = minimax;
 	if (dif != 'minimax') functocall = normal;
@@ -86,6 +95,10 @@ function turnPc() {
 	checkWin();
 }
 
+//Checks whether the game has ended or not. This is where win/lose/draw indicators are highlighted.
+//If the game has ended, the cells that caused the game to end are colored accordingly (green, red, gray).
+//If the game has ended all removeEL() is called which removes event listener from the cells.
+//If the game has ended the #next button is displayed after a slight delay.
 function checkWin() {
 	for (let i = 0; i < win.length; i++) {
 		if (
@@ -126,6 +139,8 @@ function checkWin() {
 	removeEL();
 	return true;
 }
+
+//used with minimax to check state of a perticular instance of the board. this does not affect the main board.
 function check(board) {
 	for (let i = 0; i < win.length; i++) {
 		if (
@@ -145,7 +160,7 @@ function check(board) {
 	}
 	return 3;
 }
-
+//minimax function
 function minimax(board, player) {
 	let newPlayer = '';
 	if (player === player_move) newPlayer = pc_move;
@@ -170,7 +185,7 @@ function minimax(board, player) {
 	if (player == player_move) return mn;
 	else return mx;
 }
-
+//Almost exactly like the minimax function, however sometimes it makes mistake depending on the value of a random number.
 function normal(board, player) {
 	let i = Math.floor(Math.random() * 100);
 	if (i < 6 && player === player_move) {
